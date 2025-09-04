@@ -1,7 +1,7 @@
 # Supply_chain: 
 #### To address the problem of supply chain dependency blindspots, a detailed plan can be structured around the three main goals: building transparent systems, predicting disruptions, and enabling autonomous rerouting. The following is an outline of the steps to achieve these goals, incorporating the possible solutions identified in the problem statement. 
 
-###1) High-level architecture
+### 1) High-level architecture
  - Monorepo (Turborepo) with three apps + one shared package:
  - apps/web — Next.js 14 (App Router, TypeScript), Tailwind, shadcn/ui, next-auth, Mapbox GL JS, React Query, tRPC client.
  - apps/api — NestJS (TypeScript) with Prisma (PostgreSQL), tRPC HTTP bridge, Zod DTOs, BullMQ (Redis) for jobs, Socket.IO for realtime, Passport for auth (JWT).
