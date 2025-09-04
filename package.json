@@ -1,0 +1,13 @@
+{
+    "name": "scda-monorepo",
+    "private": true,
+    "packageManager": "pnpm@9",
+    "scripts": {
+      "dev": "turbo run dev --parallel",
+      "build": "turbo run build",
+      "lint": "turbo run lint"
+    },
+    "devDependencies": {
+      "turbo": "^2.0.5"
+    }
+  }
