@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../apps/api/node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  LOGISTICS
+  PROCUREMENT
+  RISK
+  VIEWER
+}
+
+model Org {
+  id        String  @id @default(cuid())
+  name      String
+  plan      String  @default("free")
+  users     User[]
+  partners  Partner[]
+  sources   DataSource[]
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        String  @id @default(cuid())
+  email     String  @unique
+  name      String
+  role      Role
+  orgId     String
+  org       Org     @relation(fields: [orgId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Partner {
+  id        String  @id @default(cuid())
+  orgId     String
+  org       Org     @relation(fields: [orgId], references: [id])
+  name      String
+  type      String   // supplier | customer | carrier
+  meta      Json
+  createdAt DateTime @default(now())
+}
+
+model DataSource {
+  id        String  @id @default(cuid())
+  orgId     String
+  org       Org     @relation(fields: [orgId], references: [id])
+  kind      String   // erp | tms | ims
+  config    Json
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model LedgerEvent {
+  id        String  @id @default(cuid())
+  orgId     String
+  org       Org     @relation(fields: [orgId], references: [id])
+  productId String
+  shipmentId String?
+  eventType String     // produced | shipped | received | temperature | humidity | contract
+  payload   Json
+  prevHash  String?
+  hash      String
+  createdAt DateTime @default(now())
+}
+
+model SupplierScorecard {
+  id        String  @id @default(cuid())
+  partnerId String
+  partner   Partner @relation(fields: [partnerId], references: [id])
+  period    String   // e.g. 2025-08
+  onTime    Float
+  quality   Float
+  compliance Float
+  createdAt DateTime @default(now())
+}
